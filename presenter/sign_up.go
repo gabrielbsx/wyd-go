@@ -9,20 +9,9 @@ import (
 	"github.com/go-chi/chi"
 )
 
-type SignUpRoute interface {
-	SignUpRoute(r chi.Router)
-}
+func SignUpRoute(r chi.Router) {
+	app := container.NewAppContainer()
 
-type AppContainerWrapper struct {
-	*container.AppContainer
-}
-
-func NewAppContainerWrapper(app *container.AppContainer, r chi.Router) {
-	wrapper := &AppContainerWrapper{app}
-	wrapper.SignUpRoute(r)
-}
-
-func (app *AppContainerWrapper) SignUpRoute(r chi.Router) {
 	r.Post("/", func(w http.ResponseWriter, r *http.Request) {
 		body := identity.SignUpUserCommand{}
 

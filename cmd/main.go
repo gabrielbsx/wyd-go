@@ -3,24 +3,24 @@ package main
 import (
 	"net/http"
 
-	container "github.com/gabrielbsx/wyd-go/internal/di"
+	"github.com/gabrielbsx/wyd-go/infra/logger"
 	"github.com/gabrielbsx/wyd-go/presenter"
 
 	"github.com/go-chi/chi"
 )
 
 func main() {
-	app := container.NewAppContainer()
+	logger := logger.NewLogger()
 
 	r := chi.NewRouter()
 
 	r.Route("/api/v1/users", func(r chi.Router) {
-		presenter.NewAppContainerWrapper(app, r)
+		presenter.SignUpRoute(r)
 	})
 
-	app.Logger.Infof("Server started at :8080")
+	logger.Infof("Server started at :8080")
 
 	if err := http.ListenAndServe(":8080", r); err != nil {
-		app.Logger.Errorf("error: %v", err)
+		logger.Errorf("error: %v", err)
 	}
 }
